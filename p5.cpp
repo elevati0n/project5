@@ -199,6 +199,8 @@ void maze::mapMazeToGraph(graph &g)
 
 void maze::findPath(int currentX, int currentY, graph &g)
 {
+    cout << "push enter for next move";
+    getchar();
     print(rows,cols,currentX,currentY);
 
   //  cin >> donut;
@@ -220,6 +222,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     nextNode = getMap(currentX+1, currentY+1);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
     {
+        cout << "Go Down and to the right!";
         findPath(currentX+1, currentY+1, g);
         return;
     }
@@ -231,6 +234,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
 
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
     {
+        cout << "Go right!";
         findPath(currentX, currentY+1, g);
         return;
     }
@@ -241,6 +245,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     nextNode = getMap(currentX+1, currentY);
     if ((nextNode != -1) && !g.getNode(nextNode).isVisited() && !g.getNode(nextNode).isMarked())
     {
+        cout << "Go down!";
         findPath(currentX+1, currentY, g);
         return;
     }
@@ -252,6 +257,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     nextNode = getMap(currentX, currentY-1);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
     {
+        cout << "Go left!";
         findPath(currentX, currentY-1, g);
         return;
     }
@@ -262,6 +268,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
 
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
     {
+        cout << "Go up!";
         findPath(currentX-1, currentY, g);
         return;
     }
@@ -272,12 +279,14 @@ void maze::findPath(int currentX, int currentY, graph &g)
 
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
     {
+        cout << "Go up-left!";
         findPath(currentX-1, currentY-1, g);
         return;
     }
     }
 
     g.getNode(currentNode).mark();
+    cout << endl << "This is a deadend!! Mark it for future reference" << endl;
 
 
     if (currentX+1 < rows && currentY+1 < cols)
@@ -285,6 +294,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     nextNode = getMap(currentX+1, currentY+1);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
+        cout << "Go Down and to the right!";
         findPath(currentX+1, currentY+1, g);
         return;
     }
@@ -295,6 +305,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     nextNode = getMap(currentX, currentY+1);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
+        cout << "Go to the right!";
         findPath(currentX, currentY+1, g);
         return;
     }
@@ -305,6 +316,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     nextNode = getMap(currentX+1, currentY);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
+        cout << "Go Down!";
         findPath(currentX+1, currentY, g);
         return;
     }
@@ -316,6 +328,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     nextNode = getMap(currentX, currentY-1);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
+        cout << "Go left!";
         findPath(currentX, currentY-1, g);
         return;
     }
@@ -328,6 +341,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
 
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
+        cout << "Go up!";
         findPath(currentX-1, currentY, g);
         return;
     }
@@ -339,11 +353,13 @@ void maze::findPath(int currentX, int currentY, graph &g)
 
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
+        cout << "Go up and to the left!";
         findPath(currentX-1, currentY-1, g);
         return;
     }
     }
 
+    cout << "Go up!";
     findPath(currentX-1, currentY, g);
     }
 
@@ -353,8 +369,32 @@ int main()
    char x;
    ifstream fin;
 
+    cout << "Main Maze Menu!" << endl << endl;
+    cout << "[1] Maze1" << endl;
+    cout << "[2] Maze2" << endl;
+    cout << "[3] Maze3" << endl << endl;
+    cout << "Enter the number of your choice :";
+
+    int menuChoice;
+    cin >> menuChoice;
+    string fileName = "maze2.txt";
+
+    if (menuChoice < 2)
+    {
+        fileName = "maze1.txt";
+    }
+
+    if (menuChoice == 2)
+    {
+        fileName = "maze2.txt";
+    }
+
+    if (menuChoice > 2)
+    {
+        fileName = "maze3.txt";
+    }
+
    // Read the maze from the file.
-   string fileName = "maze3.txt";
 
    fin.open(fileName.c_str());
    if (!fin)
