@@ -251,12 +251,16 @@ void maze::findPath(int currentX, int currentY, graph &g)
     if (!mazeComplete){
     g.mark(currentNode);
 
+    if (currentY-1 > 0){
     nextNode = getMap(currentX, currentY-1);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
         findPath(currentX, currentY-1, g);
         return;
     }
+    }
+
+    if (currentX - 1 > 0) {
         nextNode = getMap(currentX-1, currentY);
 
     if (nextNode - 1 > 0){
@@ -265,6 +269,9 @@ void maze::findPath(int currentX, int currentY, graph &g)
         findPath(currentX-1, currentY, g);
         return;
     }
+    }
+
+
     }
 
     }
