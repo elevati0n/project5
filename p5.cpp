@@ -1,4 +1,3 @@
-
 // Project 5
 
 #include <iostream>
@@ -201,18 +200,17 @@ void maze::mapMazeToGraph(graph &g)
 void maze::findPath(int currentX, int currentY, graph &g)
 {
     print(rows,cols,currentX,currentY);
-    string donut;
+
   //  cin >> donut;
     bool mazeComplete;
     if (currentX == rows-1 && cols-1 == currentY)
     {
         cout << "maze complete!!!!";
-        mazeComplete = true;
+        return;
     }
 
-   if (mazeComplete==0)
-    {
     int currentNode = getMap(currentX, currentY);
+
     g.visit(currentNode);
     int nextNode;//
 
@@ -220,8 +218,7 @@ void maze::findPath(int currentX, int currentY, graph &g)
     if (currentX+1 < rows && currentY+1 < cols)
     {
     nextNode = getMap(currentX+1, currentY+1);
-
-    if ((nextNode != -1) && !g.getNode(nextNode).isVisited())
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
     {
         findPath(currentX+1, currentY+1, g);
         return;
@@ -232,26 +229,90 @@ void maze::findPath(int currentX, int currentY, graph &g)
     {
     nextNode = getMap(currentX, currentY+1);
 
-    if ((nextNode != -1) && !g.getNode(nextNode).isVisited())
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
     {
         findPath(currentX, currentY+1, g);
         return;
     }
     }
 
-    if (currentX+1 < rows) {
+    if (currentX+1 < rows)
+    {
     nextNode = getMap(currentX+1, currentY);
-    if ((nextNode != -1) && !g.getNode(nextNode).isVisited())
+    if ((nextNode != -1) && !g.getNode(nextNode).isVisited() && !g.getNode(nextNode).isMarked())
     {
         findPath(currentX+1, currentY, g);
         return;
     }
     }
 
-    if (!mazeComplete){
-    g.mark(currentNode);
 
-    if (currentY-1 > 0){
+    if (currentY > 0)
+    {
+    nextNode = getMap(currentX, currentY-1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        findPath(currentX, currentY-1, g);
+        return;
+    }
+    }
+
+    if (currentX > 0){
+    nextNode = getMap(currentX-1, currentY);
+
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        findPath(currentX-1, currentY, g);
+        return;
+    }
+    }
+
+    if (currentX > 0 && currentY > 0){
+    nextNode = getMap(currentX-1, currentY-1);
+
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        findPath(currentX-1, currentY-1, g);
+        return;
+    }
+    }
+
+    g.getNode(currentNode).mark();
+
+
+    if (currentX+1 < rows && currentY+1 < cols)
+    {
+    nextNode = getMap(currentX+1, currentY+1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        findPath(currentX+1, currentY+1, g);
+        return;
+    }
+    }
+
+    if (currentY+1 < cols)
+    {
+    nextNode = getMap(currentX, currentY+1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        findPath(currentX, currentY+1, g);
+        return;
+    }
+    }
+
+    if (currentX+1 < rows)
+    {
+    nextNode = getMap(currentX+1, currentY);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        findPath(currentX+1, currentY, g);
+        return;
+    }
+    }
+
+
+    if (currentY-1 > 0)
+    {
     nextNode = getMap(currentX, currentY-1);
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
@@ -260,10 +321,11 @@ void maze::findPath(int currentX, int currentY, graph &g)
     }
     }
 
-    if (currentX - 1 > 0) {
-        nextNode = getMap(currentX-1, currentY);
 
-    if (nextNode - 1 > 0){
+    if (currentX - 1 > 0)
+    {
+    nextNode = getMap(currentX-1, currentY);
+
     if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
     {
         findPath(currentX-1, currentY, g);
@@ -271,14 +333,20 @@ void maze::findPath(int currentX, int currentY, graph &g)
     }
     }
 
+    if (currentX - 1 > 0 && currentY - 1 > 0)
+    {
+    nextNode = getMap(currentX-1, currentY-1);
 
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        findPath(currentX-1, currentY-1, g);
+        return;
+    }
     }
 
+    findPath(currentX-1, currentY, g);
     }
 
-    }
-
-}
 
 int main()
 {
