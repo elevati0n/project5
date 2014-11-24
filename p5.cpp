@@ -199,13 +199,14 @@ void maze::mapMazeToGraph(graph &g)
 
 void maze::findPath(int currentX, int currentY, graph &g)
 {
+
     cout << "push enter for next move";
     getchar();
     print(rows,cols,currentX,currentY);
 
   //  cin >> donut;
     bool mazeComplete;
-    if (currentX == rows-1 && cols-1 == currentY)
+
     {
         cout << "maze complete!!!!";
         return;
@@ -361,7 +362,190 @@ void maze::findPath(int currentX, int currentY, graph &g)
 
     cout << "Go up!";
     findPath(currentX-1, currentY, g);
+
+
+    cout << "maze complete!";
+
+}
+}
+
+void maze::findPath()
+{
+    do {
+    cout << "push enter for next move";
+    getchar();
+    print(rows,cols,currentX,currentY);
+
+  //  cin >> donut;
+    bool mazeComplete;
+    if (currentX == rows-1 && cols-1 == currentY)
+    {
+        cout << "maze complete!!!!";
+        break;
     }
+
+    int currentNode = getMap(currentX, currentY);
+
+    g.visit(currentNode);
+    int nextNode;//
+
+
+    if (currentX+1 < rows && currentY+1 < cols)
+    {
+    nextNode = getMap(currentX+1, currentY+1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        cout << "Go Down and to the right!";
+        currentX =+1;
+        currentY =+1;
+        break;
+    }
+    }
+
+    if (currentY+1 < cols)
+    {
+    nextNode = getMap(currentX, currentY+1);
+
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        cout << "Go right!";
+        currentY =+ 1;
+        break;
+    }
+    }
+
+    if (currentX+1 < rows)
+    {
+    nextNode = getMap(currentX+1, currentY);
+    if ((nextNode != -1) && !g.getNode(nextNode).isVisited() && !g.getNode(nextNode).isMarked())
+    {
+        cout << "Go down!";
+        current =+ 1;
+        break;
+    }
+    }
+
+
+    if (currentY > 0)
+    {
+    nextNode = getMap(currentX, currentY-1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        cout << "Go left!";
+        currentY=-1;
+        break;
+    }
+    }
+
+    if (currentX > 0)
+    {
+    nextNode = getMap(currentX-1, currentY);
+
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        cout << "Go up!";
+        currentX=-1;
+        return;
+    }
+    }
+
+    if (currentX > 0 && currentY > 0)
+    {
+    nextNode = getMap(currentX-1, currentY-1);
+
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked() && !g.getNode(nextNode).isVisited())
+    {
+        cout << "Go up-left!";
+        currentX=-1;
+        currentY=-1;
+        break;
+    }
+    }
+
+    g.getNode(currentNode).mark();
+    cout << endl << "This is a deadend!! Mark it for future reference" << endl;
+
+
+    if (currentX+1 < rows && currentY+1 < cols)
+    {
+    nextNode = getMap(currentX+1, currentY+1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        cout << "Go Down and to the right!";
+        currentX=+1;
+        currentY=+1;
+        break;
+    }
+    }
+
+    if (currentY+1 < cols)
+    {
+    nextNode = getMap(currentX, currentY+1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        cout << "Go to the right!";
+        currentY=+1;
+        break;
+    }
+    }
+
+    if (currentX+1 < rows)
+    {
+    nextNode = getMap(currentX+1, currentY);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        cout << "Go Down!";
+        currentX=+1;
+        return;
+    }
+    }
+
+
+    if (currentY-1 > 0)
+    {
+    nextNode = getMap(currentX, currentY-1);
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        cout << "Go left!";
+        currentY=-1;
+        break;
+    }
+    }
+
+
+    if (currentX - 1 > 0)
+    {
+    nextNode = getMap(currentX-1, currentY);
+
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        cout << "Go up!";
+        currentX=-1;
+        break;
+    }
+    }
+
+    if (currentX - 1 > 0 && currentY - 1 > 0)
+    {
+    nextNode = getMap(currentX-1, currentY-1);
+
+    if ((nextNode != -1) && !g.getNode(nextNode).isMarked())
+    {
+        cout << "Go up and to the left!";
+        currentX=-1;
+        currentY=-1;
+        break;
+    }
+    }
+
+    cout << "Go up!";
+    currentX=-1, currentY, g);
+
+
+    }while(currentX == rows-1 && cols-1 == currentY)
+    cout << "maze complete!";
+
+
 
 
 int main()
